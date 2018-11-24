@@ -1,8 +1,24 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
+
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.comic-name {
+    display: block;
+    font-family: sans-serif;
+    font-size: 1.1rem;
+}
+
+.row {
+    clear: both;
+}
+
+.column {
+    width: 50%;
+    float: left;
 }
