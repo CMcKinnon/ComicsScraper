@@ -5,11 +5,12 @@ using ComicsScraper.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace ComicsScraper.Providers.Readers
+namespace ComicsScraper.Providers.Parsers
 {
-    public class GoComicsParser : IComicPasrer
+    public class DilbertParser : IComicParser
     {
         private ComicDefinition comicDefinition;
+        private readonly DateTime today = DateTime.Today;
 
         public void SetComic(ComicDefinition comicDefinition)
         {
@@ -23,8 +24,12 @@ namespace ComicsScraper.Providers.Readers
 
         public string GetComicBaseUri()
         {
-            string today = DateTime.Today.AddDays(-1).ToString("yyyy/MM/dd");
-            return $"{comicDefinition.Name}/{today}";
+            return "";
+        }
+
+        public string GetComicFilename()
+        {
+            return $"{comicDefinition.Name}-{today.ToString("yyyy-MM-dd")}{comicDefinition.Extension}";
         }
 
         public async Task<string> GetComicImageUri(string page)
@@ -32,8 +37,17 @@ namespace ComicsScraper.Providers.Readers
             HtmlParser parser = new HtmlParser();
             IHtmlDocument doc = await parser.ParseAsync(page);
 
-            IElement img = doc.QuerySelector("picture.item-comic-image img.img-fluid");
-            return img.GetAttribute("src");
+            IElement img = doc.QuerySelector("div.img-comic-container img");
+            string src = img.GetAttribute("src");
+            if (src != null)
+            {
+                if (src.StartsWith("//asset"))
+                {
+                    src = $"https:{src}";
+                }
+            }
+
+            return src;
         }
     }
 }

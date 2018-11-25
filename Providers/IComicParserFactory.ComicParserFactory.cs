@@ -1,7 +1,7 @@
 ﻿using ComicsScraper.Constants;
 using ComicsScraper.Data;
 using ComicsScraper.Models;
-using ComicsScraper.Providers.Readers;
+using ComicsScraper.Providers.Parsers;
 using System;
 
 namespace ComicsScraper.Providers
@@ -17,20 +17,20 @@ namespace ComicsScraper.Providers
             this.comicDefinitions = comicDefinitions;
         }
 
-        public IComicPasrer GetParser(string comicname)
+        public IComicParser GetParser(string comicname)
         {
-            IComicPasrer reader = null;
+            IComicParser reader = null;
 
             ComicDefinition definition = comicDefinitions.GetComicDefinition(comicname);
             if (definition != null)
             {
                 if (definition.Group == ComicGroups.GoComics)
                 {
-                    reader = (IComicPasrer)services.GetService(typeof(GoComicsParser));
+                    reader = (IComicParser)services.GetService(typeof(GoComicsParser));
                 }
                 else if (definition.Group == ComicGroups.Dilbert)
                 {
-                    reader = (IComicPasrer)services.GetService(typeof(DilbertParser));
+                    reader = (IComicParser)services.GetService(typeof(DilbertParser));
                 }
             }
             if (definition == null || reader == null)

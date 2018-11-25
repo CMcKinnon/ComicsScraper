@@ -2,13 +2,15 @@
 using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using ComicsScraper.Models;
+using System;
 using System.Threading.Tasks;
 
-namespace ComicsScraper.Providers.Readers
+namespace ComicsScraper.Providers.Parsers
 {
-    public class DilbertParser : IComicPasrer
+    public class GoComicsParser : IComicParser
     {
         private ComicDefinition comicDefinition;
+        private readonly DateTime today = DateTime.Today;
 
         public void SetComic(ComicDefinition comicDefinition)
         {
@@ -20,9 +22,15 @@ namespace ComicsScraper.Providers.Readers
             return comicDefinition.Group;
         }
 
+        public string GetComicFilename()
+        {
+            return $"{comicDefinition.Name}-{today.ToString("yyyy-MM-dd")}{comicDefinition.Extension}";
+        }
+
         public string GetComicBaseUri()
         {
-            return "";
+            string todayString = today.ToString("yyyy/MM/dd");
+            return $"{comicDefinition.Name}/{todayString}";
         }
 
         public async Task<string> GetComicImageUri(string page)
@@ -30,17 +38,8 @@ namespace ComicsScraper.Providers.Readers
             HtmlParser parser = new HtmlParser();
             IHtmlDocument doc = await parser.ParseAsync(page);
 
-            IElement img = doc.QuerySelector("div.img-comic-container img");
-            string src = img.GetAttribute("src");
-            if (src != null)
-            {
-                if (src.StartsWith("//asset"))
-                {
-                    src = $"https:{src}";
-                }
-            }
-
-            return src;
+            IElement img = doc.QuerySelector("picture.item-comic-image img.img-fluid");
+            return img.GetAttribute("src");
         }
     }
 }

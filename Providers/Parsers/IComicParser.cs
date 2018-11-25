@@ -1,13 +1,14 @@
 ﻿using ComicsScraper.Models;
 using System.Threading.Tasks;
 
-namespace ComicsScraper.Providers.Readers
+namespace ComicsScraper.Providers.Parsers
 {
-    public interface IComicPasrer
+    public interface IComicParser
     {
         void SetComic(ComicDefinition comicDefinition);
         string GetComicBaseUri();
         Task<string> GetComicImageUri(string page);
         string GetComicGroup();
+        string GetComicFilename();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using ComicsScraper.Models;
-using ComicsScraper.Providers.Readers;
-using System.Net.Http;
+using ComicsScraper.Providers.Parsers;
 using System.Threading.Tasks;
 
 namespace ComicsScraper.Providers
@@ -8,36 +7,33 @@ namespace ComicsScraper.Providers
     public class ComicProvider : IComicProvider
     {
         private readonly IComicParserFactory comicReaderFactory;
-        private readonly IHttpClientFactory httpClientFactory;
+        private readonly INetworkComicReader networkReader;
+        private readonly IFileComicReader fileReader;
 
         public ComicProvider(IComicParserFactory comicReaderFactory,
-            IHttpClientFactory httpClientFactory)
+            INetworkComicReader networkReader,
+            IFileComicReader fileReader)
         {
             this.comicReaderFactory = comicReaderFactory;
-            this.httpClientFactory = httpClientFactory;
+            this.networkReader = networkReader;
+            this.fileReader = fileReader;
         }
 
         public async Task<Comic> GetComic(string comicname)
         {
-            IComicPasrer parser = comicReaderFactory.GetParser(comicname);
-            HttpClient client = httpClientFactory.CreateClient(parser.GetComicGroup());
+            IComicParser parser = comicReaderFactory.GetParser(comicname);
 
-            string page = await client.GetStringAsync(parser.GetComicBaseUri());
-
-            string uri = await parser.GetComicImageUri(page);
-
-            byte[] imageBytes = null;
-
-            if (uri != null)
+            Comic comic = await fileReader.GetComicFromFile(parser);
+            if (comic == null)
             {
-                imageBytes = await client.GetByteArrayAsync(uri);
+                comic = await networkReader.GetComicFromNetwork(parser);
+                if (comic?.ImageBytes != null)
+                {
+                    await fileReader.SaveComicToFile(parser, comic.ImageBytes);
+                }
             }
 
-            return new Comic
-            {
-                ImageBytes = imageBytes,
-                MimeType = "image/gif"
-            };
+            return comic;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using ComicsScraper.Constants;
 using ComicsScraper.Data;
 using ComicsScraper.Providers;
-using ComicsScraper.Providers.Readers;
+using ComicsScraper.Providers.Parsers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +27,8 @@ namespace ComicsScraper
             services.AddSingleton<IComicProvider, ComicProvider>();
             services.AddSingleton<IComicParserFactory, ComicParserFactory>();
             services.AddSingleton<IComicDefinitions, ComicDefinitions>();
+            services.AddSingleton<INetworkComicReader, NetworkComicReader>();
+            services.AddSingleton<IFileComicReader, FileComicReader>();
             services.AddTransient<GoComicsParser>();
             services.AddTransient<DilbertParser>();
 

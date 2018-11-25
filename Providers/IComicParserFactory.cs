@@ -1,9 +1,9 @@
-﻿using ComicsScraper.Providers.Readers;
+﻿using ComicsScraper.Providers.Parsers;
 
 namespace ComicsScraper.Providers
 {
     public interface IComicParserFactory
     {
-        IComicPasrer GetParser(string comicname);
+        IComicParser GetParser(string comicname);
     }
 }
