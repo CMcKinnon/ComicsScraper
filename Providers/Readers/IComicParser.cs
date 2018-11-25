@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 
 namespace ComicsScraper.Providers.Readers
 {
-    public interface IComicReader
+    public interface IComicPasrer
     {
         void SetComic(ComicDefinition comicDefinition);
-        Task<Comic> GetComic();
+        string GetComicBaseUri();
+        Task<string> GetComicImageUri(string page);
+        string GetComicGroup();
     }
 }

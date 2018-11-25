@@ -1,35 +1,36 @@
-﻿using ComicsScraper.Data;
+﻿using ComicsScraper.Constants;
+using ComicsScraper.Data;
 using ComicsScraper.Models;
 using ComicsScraper.Providers.Readers;
 using System;
 
 namespace ComicsScraper.Providers
 {
-    public class ComicReaderFactory : IComicReaderFactory
+    public class ComicParserFactory : IComicParserFactory
     {
         private readonly IServiceProvider services;
         private readonly IComicDefinitions comicDefinitions;
 
-        public ComicReaderFactory(IServiceProvider services, IComicDefinitions comicDefinitions)
+        public ComicParserFactory(IServiceProvider services, IComicDefinitions comicDefinitions)
         {
             this.services = services;
             this.comicDefinitions = comicDefinitions;
         }
 
-        public IComicReader GetReader(string comicname)
+        public IComicPasrer GetParser(string comicname)
         {
-            IComicReader reader = null;
+            IComicPasrer reader = null;
 
             ComicDefinition definition = comicDefinitions.GetComicDefinition(comicname);
             if (definition != null)
             {
-                if (definition.Group == "GoComics")
+                if (definition.Group == ComicGroups.GoComics)
                 {
-                    reader = (IComicReader)services.GetService(typeof(GoComicsReader));
+                    reader = (IComicPasrer)services.GetService(typeof(GoComicsParser));
                 }
-                else if (definition.Group == "Dilbert")
+                else if (definition.Group == ComicGroups.Dilbert)
                 {
-                    reader = (IComicReader)services.GetService(typeof(DilbertReader));
+                    reader = (IComicPasrer)services.GetService(typeof(DilbertParser));
                 }
             }
             if (definition == null || reader == null)

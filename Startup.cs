@@ -1,4 +1,5 @@
-﻿using ComicsScraper.Data;
+﻿using ComicsScraper.Constants;
+using ComicsScraper.Data;
 using ComicsScraper.Providers;
 using ComicsScraper.Providers.Readers;
 using Microsoft.AspNetCore.Builder;
@@ -24,18 +25,18 @@ namespace ComicsScraper
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IComicProvider, ComicProvider>();
-            services.AddSingleton<IComicReaderFactory, ComicReaderFactory>();
+            services.AddSingleton<IComicParserFactory, ComicParserFactory>();
             services.AddSingleton<IComicDefinitions, ComicDefinitions>();
-            services.AddTransient<GoComicsReader>();
-            services.AddTransient<DilbertReader>();
+            services.AddTransient<GoComicsParser>();
+            services.AddTransient<DilbertParser>();
 
-            services.AddHttpClient("GoComics", client =>
+            services.AddHttpClient(ComicGroups.GoComics, client =>
             {
                 client.BaseAddress = new Uri("http://www.gocomics.com/");
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko");
                 client.DefaultRequestHeaders.Add("Accept", "text/html");
             });
-            services.AddHttpClient("Dilbert", client =>
+            services.AddHttpClient(ComicGroups.Dilbert, client =>
             {
                 client.BaseAddress = new Uri("https://dilbert.com/");
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko");

@@ -2,8 +2,8 @@
 
 namespace ComicsScraper.Providers
 {
-    public interface IComicReaderFactory
+    public interface IComicParserFactory
     {
-        IComicReader GetReader(string comicname);
+        IComicPasrer GetParser(string comicname);
     }
 }
