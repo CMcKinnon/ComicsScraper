@@ -1,4 +1,5 @@
-﻿using ComicsScraper.Providers;
+﻿using ComicsScraper.Data;
+using ComicsScraper.Providers;
 using ComicsScraper.Providers.Readers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,7 @@ namespace ComicsScraper
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IComicProvider, ComicProvider>();
             services.AddSingleton<IComicReaderFactory, ComicReaderFactory>();
+            services.AddSingleton<IComicDefinitions, ComicDefinitions>();
             services.AddTransient<GoComicsReader>();
             services.AddTransient<DilbertReader>();
 

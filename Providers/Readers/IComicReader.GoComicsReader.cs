@@ -26,7 +26,7 @@ namespace ComicsScraper.Providers.Readers
         public async Task<Comic> GetComic()
         {
             HttpClient client = httpClientFactory.CreateClient("GoComics");
-            string today = DateTime.Today.ToString("yyyy/MM/dd");
+            string today =  DateTime.Today.AddDays(-1).ToString("yyyy/MM/dd");
             string page = await client.GetStringAsync($"{this.comicDefinition.Name}/{today}");
 
             HtmlParser parser = new HtmlParser();
