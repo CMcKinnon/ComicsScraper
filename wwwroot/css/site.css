@@ -15,10 +15,24 @@
 }
 
 .row {
-    clear: both;
+    display: flex;
 }
 
 .column {
-    width: 50%;
-    float: left;
+    flex: 50%;
+}
+img { 
+    width: 700px;
+}
+
+@media (max-width: 1024px) {
+    img {
+        width: auto;
+    }
+    .row {
+        flex-flow: column wrap;
+    }
+    .column {
+        width: 100%;
+    }
 }
