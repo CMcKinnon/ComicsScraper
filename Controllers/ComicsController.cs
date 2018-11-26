@@ -1,6 +1,7 @@
 ﻿using ComicsScraper.Models;
 using ComicsScraper.Providers;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace ComicsScraper.Controllers
@@ -19,8 +20,15 @@ namespace ComicsScraper.Controllers
         [HttpGet("{comicname}")]
         public async Task<IActionResult> GetComic(string comicname)
         {
-            Comic comic = await comicProvider.GetComic(comicname);
-            return File(comic.ImageBytes, comic.MimeType);
+            try
+            {
+                Comic comic = await comicProvider.GetComic(comicname);
+                return File(comic.ImageBytes, comic.MimeType);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
         }
     }
 }
