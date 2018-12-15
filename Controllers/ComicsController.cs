@@ -30,5 +30,11 @@ namespace ComicsScraper.Controllers
                 return StatusCode(500, ex.ToString());
             }
         }
+
+        [HttpGet("{date}")]
+        public IActionResult AreComicsDownloaded(DateTime date)
+        {
+            return NotFound();
+        }
     }
 }

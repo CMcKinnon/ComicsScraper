@@ -1,5 +1,6 @@
 ﻿using ComicsScraper.Constants;
 using ComicsScraper.Data;
+using ComicsScraper.Jobs;
 using ComicsScraper.Providers;
 using ComicsScraper.Providers.Parsers;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,7 @@ namespace ComicsScraper
             services.AddSingleton<IComicDefinitions, ComicDefinitions>();
             services.AddSingleton<INetworkComicReader, NetworkComicReader>();
             services.AddSingleton<IFileComicReader, FileComicReader>();
+            services.AddSingleton<IJobRepository, JobRepository>();
             services.AddTransient<GoComicsParser>();
             services.AddTransient<DilbertParser>();
 
