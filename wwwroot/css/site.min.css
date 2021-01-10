@@ -1,1 +1,0 @@
-body{padding-top:5px;padding-bottom:5px}.body-content{padding-left:15px;padding-right:15px}.comic-name{display:block;font-family:sans-serif;font-size:1.1rem}.row{display:flex}.column{flex:50%}img{width:700px}@media(max-width:1024px){img{width:auto}.row{flex-flow:column wrap}.column{width:100%}}

@@ -20,6 +20,7 @@
 
 .column {
     flex: 50%;
+    margin: 8px;
 }
 img { 
     width: 700px;
@@ -27,12 +28,13 @@ img {
 
 @media (max-width: 1024px) {
     img {
-        width: auto;
+        max-width: 95vw;
     }
     .row {
         flex-flow: column wrap;
     }
     .column {
         width: 100%;
+        margin: 8px;
     }
 }
