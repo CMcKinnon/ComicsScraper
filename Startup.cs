@@ -12,6 +12,7 @@ using System;
 
 namespace ComicsScraper
 {
+    // comment
     public class Startup
     {
         public Startup(IConfiguration configuration)
