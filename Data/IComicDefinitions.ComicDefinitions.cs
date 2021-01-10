@@ -9,19 +9,10 @@ namespace ComicsScraper.Data
     {
         private readonly IList<ComicDefinition> comicDefinitions;
 
-        public ComicDefinitions(IConfiguration configuration)
-        {
-            comicDefinitions = configuration.GetSection("Comics").Get<IList<ComicDefinition>>().OrderBy(c => c.SortOrder).ToList();
-        }
+        public ComicDefinitions(IConfiguration configuration) => comicDefinitions = configuration.GetSection("Comics").Get<IList<ComicDefinition>>().OrderBy(c => c.SortOrder).ToList();
 
-        public ComicDefinition GetComicDefinition(string comicnamme)
-        {
-            return comicDefinitions.FirstOrDefault(c => c.Name == comicnamme);
-        }
+        public ComicDefinition GetComicDefinition(string comicnamme) => comicDefinitions.FirstOrDefault(c => c.Name == comicnamme);
 
-        public IList<ComicDefinition> GetSortedComics()
-        {
-            return comicDefinitions;
-        }
+        public IList<ComicDefinition> GetSortedComics() => comicDefinitions;
     }
 }

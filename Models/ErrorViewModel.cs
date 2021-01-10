@@ -1,5 +1,3 @@
-using System;
-
 namespace ComicsScraper.Models
 {
     public class ErrorViewModel

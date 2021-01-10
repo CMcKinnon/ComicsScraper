@@ -1,18 +1,17 @@
-﻿using ComicsScraper.Constants;
+using System;
+using ComicsScraper.Constants;
 using ComicsScraper.Data;
-using ComicsScraper.Jobs;
 using ComicsScraper.Providers;
 using ComicsScraper.Providers.Parsers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
+using Microsoft.Extensions.Hosting;
 
 namespace ComicsScraper
 {
-    // comment
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -25,13 +24,11 @@ namespace ComicsScraper
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IComicProvider, ComicProvider>();
             services.AddSingleton<IComicParserFactory, ComicParserFactory>();
             services.AddSingleton<IComicDefinitions, ComicDefinitions>();
             services.AddSingleton<INetworkComicReader, NetworkComicReader>();
             services.AddSingleton<IFileComicReader, FileComicReader>();
-            services.AddSingleton<IJobRepository, JobRepository>();
             services.AddTransient<GoComicsParser>();
             services.AddTransient<DilbertParser>();
 
@@ -47,11 +44,18 @@ namespace ComicsScraper
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko");
                 client.DefaultRequestHeaders.Add("Accept", "text/html");
             });
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -59,17 +63,20 @@ namespace ComicsScraper
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+	        app.UsePathBase("/comics");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

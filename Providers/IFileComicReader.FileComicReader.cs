@@ -28,7 +28,6 @@ namespace ComicsScraper.Providers
                     MimeType = $"image/{mimetype}",
                     ImageBytes = await File.ReadAllBytesAsync(fullPath)
                 };
-
             }
 
             return null;

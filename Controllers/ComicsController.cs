@@ -12,10 +12,7 @@ namespace ComicsScraper.Controllers
     {
         private readonly IComicProvider comicProvider;
 
-        public ComicsController(IComicProvider comicProvider)
-        {
-            this.comicProvider = comicProvider;
-        }
+        public ComicsController(IComicProvider comicProvider) => this.comicProvider = comicProvider;
 
         [HttpGet("{comicname}")]
         public async Task<IActionResult> GetComic(string comicname)
@@ -29,12 +26,6 @@ namespace ComicsScraper.Controllers
             {
                 return StatusCode(500, ex.ToString());
             }
-        }
-
-        [HttpGet("{date}")]
-        public IActionResult AreComicsDownloaded(DateTime date)
-        {
-            return NotFound();
         }
     }
 }

@@ -19,7 +19,6 @@ namespace ComicsScraper.Controllers
             return View(comicDefinitions.GetSortedComics());
         }
 
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

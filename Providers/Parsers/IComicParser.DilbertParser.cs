@@ -12,39 +12,24 @@ namespace ComicsScraper.Providers.Parsers
         private ComicDefinition comicDefinition;
         private readonly DateTime today = DateTime.Today;
 
-        public void SetComic(ComicDefinition comicDefinition)
-        {
-            this.comicDefinition = comicDefinition;
-        }
+        public void SetComic(ComicDefinition comicDefinition) => this.comicDefinition = comicDefinition;
 
-        public string GetComicGroup()
-        {
-            return comicDefinition.Group;
-        }
+        public string GetComicGroup() => comicDefinition.Group;
 
-        public string GetComicBaseUri()
-        {
-            return "";
-        }
+        public string GetComicBaseUri() => "";
 
-        public string GetComicFilename()
-        {
-            return $"{comicDefinition.Name}-{today.ToString("yyyy-MM-dd")}{comicDefinition.Extension}";
-        }
+        public string GetComicFilename() => $"{comicDefinition.Name}-{today:yyyy-MM-dd}{comicDefinition.Extension}";
 
         public async Task<string> GetComicImageUri(string page)
         {
-            HtmlParser parser = new HtmlParser();
+            HtmlParser parser = new();
             IHtmlDocument doc = await parser.ParseAsync(page);
 
             IElement img = doc.QuerySelector("div.img-comic-container img");
             string src = img.GetAttribute("src");
-            if (src != null)
+            if (src?.StartsWith("//asset") == true)
             {
-                if (src.StartsWith("//asset"))
-                {
-                    src = $"https:{src}";
-                }
+                src = $"https:{src}";
             }
 
             return src;
