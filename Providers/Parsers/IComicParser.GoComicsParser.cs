@@ -30,7 +30,7 @@ namespace ComicsScraper.Providers.Parsers
             IHtmlDocument doc = await parser.ParseAsync(page);
 
             IElement img = doc.QuerySelector("picture.item-comic-image img.img-fluid");
-            return img.GetAttribute("src");
+            return img != null ? img.GetAttribute("src") : null;
         }
     }
 }

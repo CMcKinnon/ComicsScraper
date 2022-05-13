@@ -20,6 +20,10 @@ namespace ComicsScraper.Controllers
             try
             {
                 Comic comic = await comicProvider.GetComic(comicname);
+                if (comic.ImageBytes == null)
+                {
+                    return NotFound();
+                }
                 return File(comic.ImageBytes, comic.MimeType);
             }
             catch(Exception ex)
