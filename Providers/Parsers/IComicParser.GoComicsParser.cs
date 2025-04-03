@@ -3,6 +3,7 @@ using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using ComicsScraper.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ComicsScraper.Providers.Parsers
@@ -20,8 +21,7 @@ namespace ComicsScraper.Providers.Parsers
 
         public string GetComicBaseUri()
         {
-            string todayString = today.ToString("yyyy/MM/dd");
-            return $"{comicDefinition.Name}/{todayString}";
+            return $"{comicDefinition.Name}";
         }
 
         public async Task<string> GetComicImageUri(string page)
@@ -29,7 +29,7 @@ namespace ComicsScraper.Providers.Parsers
             HtmlParser parser = new();
             IHtmlDocument doc = await parser.ParseAsync(page);
 
-            IElement img = doc.QuerySelector("picture.item-comic-image img.img-fluid");
+            IElement img = doc.QuerySelectorAll("section[data-sentry-component=ShowComicViewer] button > img").FirstOrDefault();
             return img != null ? img.GetAttribute("src") : null;
         }
     }

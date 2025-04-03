@@ -34,7 +34,7 @@ namespace ComicsScraper
 
             services.AddHttpClient(ComicGroups.GoComics, client =>
             {
-                client.BaseAddress = new Uri("http://www.gocomics.com/");
+                client.BaseAddress = new Uri("https://gocomics.com/");
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko");
                 client.DefaultRequestHeaders.Add("Accept", "text/html");
             });
