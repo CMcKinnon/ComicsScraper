@@ -29,7 +29,7 @@ namespace ComicsScraper.Providers.Parsers
             HtmlParser parser = new();
             IHtmlDocument doc = await parser.ParseAsync(page);
 
-            IElement img = doc.QuerySelectorAll("section[data-sentry-component=ShowComicViewer] button > img").FirstOrDefault();
+            IElement img = doc.QuerySelectorAll("section[class*=ShowComicViewer] button > img").FirstOrDefault();
             return img != null ? img.GetAttribute("src") : null;
         }
     }
