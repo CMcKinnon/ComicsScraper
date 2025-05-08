@@ -4,6 +4,7 @@ using AngleSharp.Parser.Html;
 using ComicsScraper.Models;
 using System;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace ComicsScraper.Providers.Parsers
@@ -29,8 +30,9 @@ namespace ComicsScraper.Providers.Parsers
             HtmlParser parser = new();
             IHtmlDocument doc = await parser.ParseAsync(page);
 
-            IElement img = doc.QuerySelectorAll("section[class*=ShowComicViewer] button > img").FirstOrDefault();
-            return img != null ? img.GetAttribute("src") : null;
+            IElement img = doc.QuerySelectorAll("section[class*=ShowComicViewer] script").FirstOrDefault();
+            JsonObject json = JsonNode.Parse(img?.InnerHtml) as JsonObject;
+            return json != null ? json["contentUrl"].ToString() : null;
         }
     }
 }
